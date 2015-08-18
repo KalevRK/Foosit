@@ -2,10 +2,19 @@
 <html data-ng-app="foositApp">
   <head>
     <title>Foosit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/styles.css" />
   </head>
   <body>
     <h1>Foosit</h1>
+
+    <div data-ng-controller="NavController">
+      <ul class="nav nav-tabs">
+        <li data-ng-class="{ active: isActive('/')}"><a href="#!/">Leaderboard</a></li>
+        <li data-ng-class="{ active: isActive('/matches')}"><a href="#!/matches">Matches</a></li>
+        <li data-ng-class="{ active: isActive('/graph')}"><a href="#!/graph">Graph</a></li>
+      </ul>
+    </div>
 
     <div data-ng-view>
     </div>

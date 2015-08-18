@@ -1,6 +1,11 @@
 'use strict';
 
 angular.module('foositControllers', [])
+  .controller('NavController', ['$scope', '$location', function($scope, $location) {
+    $scope.isActive = function(viewLocation) {
+      return viewLocation === $location.path();
+    };
+  }])
   .controller('LeaderboardCtrl', ['$scope', 'LeaderboardService', function LeaderboardCtrl($scope, LeaderboardService) {
     
     $scope.playerList = [];
