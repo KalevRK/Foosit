@@ -22,6 +22,7 @@ angular.module('foositControllers', [])
   .controller('MatchCtrl', ['$scope', 'MatchService', function MatchCtrl($scope, MatchService) {
     
     $scope.matchList = [];
+    $scope.order = 'date';
 
     function refreshMatchList() {
       MatchService.getMatches()
@@ -46,6 +47,10 @@ angular.module('foositControllers', [])
           console.log('Match added successfully');
           refreshMatchList();
         })
+    };
+
+    $scope.setOrder = function(order) {
+      $scope.order = order;
     };
 
     }

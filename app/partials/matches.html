@@ -14,14 +14,14 @@
     <input type="submit" ng-click="addNewMatch()" />
   </form>
   <br />
-  <table>
+  <table class="table table-hover">
     <tr>
-      <th>Date</th>
-      <th>Winner</th>
-      <th>Loser</th>
-      <th>Score</th>
+      <th data-ng-click="setOrder('date')">Date</th>
+      <th data-ng-click="setOrder('winner')">Winner</th>
+      <th data-ng-click="setOrder('loser')">Loser</th>
+      <th data-ng-click="setOrder('loserScore')">Score</th>
     </tr>
-    <tr data-ng-repeat="match in matchList | orderBy: 'date':true">
+    <tr data-ng-repeat="match in matchList | orderBy: order:true">
       <td>{{ match.date }}</td>
       <td>{{ match.winner }}</td>
       <td>{{ match.loser }}</td>
