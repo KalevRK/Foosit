@@ -14,3 +14,13 @@ td {
   border-right: solid 1px #D3D3D3;
   border-left: solid 1px #D3D3D3;
 }
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}

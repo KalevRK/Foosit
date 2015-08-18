@@ -14,4 +14,10 @@ angular.module('foositServices', [])
     this.addMatch = function(match) {
       return $http.post('/api/match/add', match);
     }
+  }])
+  .service('GraphService', ['$http', function($http) {
+    this.getData = function() {
+      return $http.get('/api/wincount');
+    };
   }]);
+  
