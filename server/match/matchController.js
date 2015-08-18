@@ -4,6 +4,10 @@
 // Based on requests sent to the Match route create or read Match data from
 // the MongoDB database.
 
+// ELO library for calculating player ratings
+var ELO = require('../../lib/elo.js');
+
+// Mongoose Models
 var Match = require('./matchModel.js');
 var Player = require('../player/playerModel.js');
 var Wincount = require('../wincount/wincountModel.js');
@@ -24,27 +28,117 @@ module.exports = {
   // Add a match to the database
   addMatch: function(req, res) {
     
-    // req.body contains:
-      // date
-      // winner
-      // winnerScore
-      // loser
-      // loserScore
-
-    console.log('req.body.date:', req.body.date);
-    console.log('req.body.winner:', req.body.winner);
-    console.log('req.body.winnerScore:', req.body.winnerScore);
-    console.log('req.body.loser:', req.body.loser);
-    console.log('req.body.loserScore:', req.body.loserScore);
+    // store the retrieved or created Player documents from the MongoDB database
+    // in order to update based on the results of the match
+    var winningPlayer, losingPlayer;
+    var winnerELO, loserELO;
+    var winnerWincount, loserWincount;
     
     // If any of the two players involved in the match don't exist in the database
     // then create them
+    Player.findOneAsync({ 'name': req.body.winner })
+      .then(function(player) {
+        // if player is null then create them
+        if (player === null) {
+          
+          var newPlayer = {
+            name: req.body.winner,
+            eloRating: 1600,
+            winRecord: 0,
+            lossRecord: 0
+          };
 
-    // Update the players' win/loss records and their ELO ratings
-    // If there is no wincount record for the winner against this opponent then create it
-    // otherwise update the existing wincount record
+          return Player.createAsync(newPlayer);
+        } else {
+          winningPlayer = player;
+        }
+      })
+      .then(function(player) {
+        if (!winningPlayer) {
+          winningPlayer = player;
+        }
 
-    res.json({});
+        // Check to see if losing player exists
+        return Player.findOneAsync({ 'name': req.body.loser });
+      })
+      .then(function(player) {
+        // if player is null then create them
+        if (player === null) {
+
+          var newPlayer = {
+            name: req.body.loser,
+            eloRating: 1600,
+            winRecord: 0,
+            lossRecord: 0
+          };
+
+          return Player.createAsync(newPlayer);
+        } else {
+          losingPlayer = player;
+        }
+      })
+      .then(function(player) {
+        if (!losingPlayer) {
+          losingPlayer = player;
+        }
+
+        // Calculate new ELO ratings for players
+        winnerELO = ELO.getNewRating(winningPlayer.eloRating, losingPlayer.eloRating, 1);
+        loserELO = ELO.getNewRating(losingPlayer.eloRating, winningPlayer.eloRating, 0);
+
+        // Update ELO Rating, # Wins, and # Losses for players
+        // Update winning player
+        return Player.updateAsync({ 'name': winningPlayer.name }, { $inc: { winRecord: 1 }, eloRating: winnerELO });
+      })
+      .then(function(updatedWinner) {
+        // Update losing player
+        return Player.updateAsync({ 'name': losingPlayer.name }, { $inc: { lossRecord: 1 }, eloRating: loserELO });
+      })
+      .then(function(updatedLoser) {
+        // Check if wincount exists for winner vs. loser
+        return Wincount.findOneAsync({ 'player': winningPlayer.name, 'opponent': losingPlayer.name });
+      })
+      .then(function(wWincount) {
+        // if winnerWincount is null then create new one
+        if (wWincount === null) {
+
+          var newWinnerWincount = {
+            player: winningPlayer.name,
+            opponent: losingPlayer.name,
+            wincount: 0
+          };
+
+          return Wincount.createAsync(newWinnerWincount);
+        } else {
+          winnerWincount = wWincount;
+        }
+      })
+      .then(function(newWinnerWincount) {
+        if (!winnerWincount) {
+          winnerWincount = newWinnerWincount;
+        }
+
+        // Update the wincount for the winning player
+        return Wincount.updateAsync({ 'player': winningPlayer.name, 'opponent': losingPlayer.name }, { $inc: { wincount: 1 } });
+      })
+      .then(function(updatedWinCount) {
+        // Create and save new match
+        var newMatch = {
+          date: req.body.date,
+          winner: req.body.winner,
+          winnerScore: req.body.winnerScore,
+          loser: req.body.loser,
+          loserScore: req.body.loserScore
+        };
+
+        return Match.createAsync(newMatch);
+      })
+      .then(function(newlyCreatedMatch) {
+        res.json(newlyCreatedMatch);
+      })
+      .catch(function(err) {
+        console.error('Error in adding new match:', err);
+      });
   }
 
 };
