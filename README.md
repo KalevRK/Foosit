@@ -1,0 +1,2 @@
+# Foosit
+Coding challenge project
