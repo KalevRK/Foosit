@@ -1,3 +1,16 @@
-input {
-  display: inline;
+th {
+  background-color: #B3F29D;
+  border-bottom: solid 2px #7E827D;
+  border-right: solid 1px #D3D3D3;
+  border-left: solid 1px #D3D3D3;
+}
+
+#matchTableHeader th:hover {
+  color: #339BF5;
+  cursor: pointer;
+}
+
+td {
+  border-right: solid 1px #D3D3D3;
+  border-left: solid 1px #D3D3D3;
 }

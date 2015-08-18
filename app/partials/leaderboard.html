@@ -9,11 +9,11 @@
       <th>Losses</th>
     </tr>
     <tr data-ng-repeat="player in playerList | orderBy: 'eloRating':true">
-      <td>{{ $index + 1 }}</td>
-      <td>{{ player.name }}</td>
-      <td>{{ player.eloRating }}</td>
-      <td>{{ player.winRecord }}</td>
-      <td>{{ player.lossRecord }}</td>
+      <td class="col-sm-1">{{ $index + 1 }}</td>
+      <td class="col-sm-4">{{ player.name }}</td>
+      <td class="col-sm-3">{{ player.eloRating }}</td>
+      <td class="col-sm-2">{{ player.winRecord }}</td>
+      <td class="col-sm-2">{{ player.lossRecord }}</td>
     </tr>
   </table>
 </div>

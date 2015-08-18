@@ -1,7 +1,7 @@
 <div id="matchContainer">
   <h2>Matches</h2>
-  <form>
-    <label>Record a Match</label> <br />
+  <form class="form-inline">
+    <h4>Record a Match</h4>
     Date:
     <input type="date" data-ng-model="newDate" />
     Winner:
@@ -11,18 +11,18 @@
     Score (Winner - Loser):
     <input type="number" min="0" max="5" data-ng-model="newScoreW" />
     <input type="number" min="0" max="5" data-ng-model="newScoreL" />
-    <input type="submit" ng-click="addNewMatch()" />
+    <input type="submit" value="Add Match" ng-click="addNewMatch()" />
   </form>
   <br />
   <table class="table table-hover">
-    <tr>
-      <th data-ng-click="setOrder('date')">Date</th>
-      <th data-ng-click="setOrder('winner')">Winner</th>
-      <th data-ng-click="setOrder('loser')">Loser</th>
-      <th data-ng-click="setOrder('loserScore')">Score</th>
+    <tr id="matchTableHeader">
+      <th class="col-sm-3" data-ng-click="setOrder('date')">Date</th>
+      <th class="col-sm-3" data-ng-click="setOrder('winner')">Winner</th>
+      <th class="col-sm-3" data-ng-click="setOrder('loser')">Loser</th>
+      <th class="col-sm-3" data-ng-click="setOrder('loserScore')">Score</th>
     </tr>
     <tr data-ng-repeat="match in matchList | orderBy: order:true">
-      <td>{{ match.date }}</td>
+      <td>{{ match.date | date: 'MM/dd/yyyy' }}</td>
       <td>{{ match.winner }}</td>
       <td>{{ match.loser }}</td>
       <td>{{ match.winnerScore }} - {{ match.loserScore }}</td>
