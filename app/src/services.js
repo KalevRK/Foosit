@@ -5,4 +5,9 @@ angular.module('foositServices', [])
     this.getPlayers = function() {
       return $http.get('/api/player');
     };
+  }])
+  .service('MatchService', ['$http', function($http) {
+    this.getMatches = function() {
+      return $http.get('/api/match');
+    };
   }]);

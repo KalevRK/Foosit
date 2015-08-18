@@ -7,6 +7,10 @@ angular.module('foositApp', ['ngRoute', 'foositControllers', 'foositServices'])
         templateUrl: 'partials/leaderboard.html',
         controller: 'LeaderboardCtrl'
       })
+      .when('/matches', {
+        templateUrl: 'partials/matches.html',
+        controller: 'MatchCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

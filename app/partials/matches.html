@@ -1,0 +1,17 @@
+<div id="matchContainer">
+  <h2>Matches</h2>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Winner</th>
+      <th>Loser</th>
+      <th>Score</th>
+    </tr>
+    <tr data-ng-repeat="match in matchList | orderBy: 'date':true">
+      <td>{{ match.date }}</td>
+      <td>{{ match.winner }}</td>
+      <td>{{ match.loser }}</td>
+      <td>{{ match.winnerScore }} - {{ match.loserScore }}</td>
+    </tr>
+  </table>
+</div>
