@@ -9,7 +9,7 @@ module.exports = function(app) {
   
   // Get all of the matchs in the system
   app.route('/')
-    .get(matchController.getAllMatchs);
+    .get(matchController.getAllMatches);
 
   // Add a new match to the system
   app.route('/add')

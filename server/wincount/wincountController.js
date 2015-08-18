@@ -10,7 +10,13 @@ module.exports = {
 
   // Retrieve all of the wincounts in the database
   getAllWincounts: function(req, res) {
-
+    Wincount.findAsync()
+      .then(function(wincounts) {
+        res.json(wincounts);
+      })
+      .catch(function(err){
+        console.error('Error in reading wincounts');
+      });
   }
 
 };

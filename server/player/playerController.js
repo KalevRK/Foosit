@@ -10,7 +10,13 @@ module.exports = {
 
   // Retrieve all of the players in the database
   getAllPlayers: function(req, res) {
-
+    Player.findAsync()
+      .then(function(players) {
+        res.json(players);
+      })
+      .catch(function(err){
+        console.error('Error in reading players');
+      });
   }
 
 };

@@ -5,6 +5,18 @@
 
 var morgan = require('morgan'); // for logging requests
 var bodyParser = require('body-parser'); // for parsing HTTP POST request bodies
+var Promise = require('bluebird'); // Bluebird promise library
+var mongoose = Promise.promisifyAll(require('mongoose')); // ODM for MongoDB database
+
+// Connect to the MongoDB database using Mongoose
+mongoose.connect('mongodb://localhost/foosit');
+
+// Confirm successful database connection
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Successfully connected to MongoDB database');
+});
 
 
 module.exports = function(app, express) {
