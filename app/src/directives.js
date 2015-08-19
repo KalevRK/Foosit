@@ -30,23 +30,26 @@ angular.module('foositDirectives', ['d3'])
             return;
           }
 
-          // remove any previously rendered SVG elements
+          // Remove any previously rendered SVG elements
           d3.select("svg").remove();
 
+          // Define the characteristics of the force layout
           var force = d3.layout.force()
-            .charge(-120)
+            .charge(-200)
             .linkDistance(150)
             .size([width, height])
             .nodes(data.nodes)
             .links(data.links)
             .start();
 
+          // Create a SVG element on the DOM
           var svg = d3.select(element[0])
             .append("svg")
             .attr("width", width)
             .attr("height", height)
             .attr("border", 1);
 
+          // Draw a border around the SVG element
           var borderPath = svg.append("rect")
             .attr("x", 0)
             .attr("y", 0)
@@ -56,7 +59,7 @@ angular.module('foositDirectives', ['d3'])
             .style("fill", "none")
             .style("stroke-width", 1);
 
-          // Define arrow marker for lines
+          // Define an arrow marker for lines
           var defs = svg.append('defs');
           defs.append("svg:marker")
             .attr("id", "arrow")
@@ -71,6 +74,7 @@ angular.module('foositDirectives', ['d3'])
             .attr("d", "M 0 0L 10 5 L 0 10 z")
             .attr("fill", "#000");
 
+          // Bind link data to SVG line elements and draw new lines
           var link = svg.selectAll(".link")
             .data(data.links)
             .enter().append("g")
@@ -79,6 +83,7 @@ angular.module('foositDirectives', ['d3'])
             .style("stroke-width", 2)
             .attr("marker-end", "url(#arrow)");
 
+          // Bind node data to SVG circle elements and draw new circles
           var node = svg.selectAll(".node")
             .data(data.nodes)
             .enter().append("g")
@@ -87,6 +92,7 @@ angular.module('foositDirectives', ['d3'])
             .style("r", 20)
             .call(force.drag);
 
+          // Label nodes with player names
           var nodeTexts = svg.selectAll(".node").append("text")
             .attr("class", "label")
             .style("font-size", 20)
@@ -96,6 +102,7 @@ angular.module('foositDirectives', ['d3'])
             .style("fill-opacity", 1)
             .text(function(d) { return d.name });
 
+          // Label links with the win count for the source player vs. the target player
           var linkTexts = svg.selectAll(".link").append("text")
             .attr("class", "label")
             .style("font-size", 16)
@@ -105,11 +112,12 @@ angular.module('foositDirectives', ['d3'])
             .style("fill-opacity", 1)
             .text(function(d) { return d.value });          
 
+          // Update the layout over time
           force.on("tick", function() {
-            link.attr("x1", function(d) { return d.source.x })
-                .attr("y1", function(d) { return d.source.y })
-                .attr("x2", function(d) { return d.target.x })
-                .attr("y2", function(d) { return d.target.y });
+            link.attr("x1", function(d) { return d.source.x < d.target.x ? d.source.x + 10 : d.source.x - 10 })
+                .attr("y1", function(d) { return d.source.y < d.target.y ? d.source.y + 10 : d.source.y - 10 })
+                .attr("x2", function(d) { return d.target.x < d.source.x ? d.target.x + 10 : d.target.x - 10 })
+                .attr("y2", function(d) { return d.target.y < d.source.y ? d.target.y + 10 : d.target.y - 10 });
 
             node.attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; });
@@ -119,7 +127,7 @@ angular.module('foositDirectives', ['d3'])
             });
 
             linkTexts.attr("transform", function(d) {
-              return "translate(" + (d.target.x - ((d.target.x-d.source.x)/2)) + "," + (d.target.y - ((d.target.y-d.source.y)/2)) + ")";
+              return "translate(" + (d.target.x - ((d.target.x-d.source.x)/3)) + "," + (d.target.y - ((d.target.y-d.source.y)/3)) + ")";
             });
 
           });
