@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('foositDirectives', ['d3'])
   .directive('foositGraph', ['d3Service', function(d3Service) {
     return {
@@ -54,11 +56,28 @@ angular.module('foositDirectives', ['d3'])
             .style("fill", "none")
             .style("stroke-width", 1);
 
+          // Define arrow marker for lines
+          var defs = svg.append('defs');
+          defs.append("svg:marker")
+            .attr("id", "arrow")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", "10")
+            .attr("refY", "5")
+            .attr("markerUnits", "strokeWidth")
+            .attr("markerWidth", "10")
+            .attr("markerHeight", "5")
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M 0 0L 10 5 L 0 10 z")
+            .attr("fill", "#000");
+
           var link = svg.selectAll(".link")
             .data(data.links)
-            .enter().append("line")
+            .enter().append("g")
             .attr("class", "link")
-            .style("stroke-width", 2);
+            .append("line")
+            .style("stroke-width", 2)
+            .attr("marker-end", "url(#arrow)");
 
           var node = svg.selectAll(".node")
             .data(data.nodes)
@@ -68,7 +87,7 @@ angular.module('foositDirectives', ['d3'])
             .style("r", 20)
             .call(force.drag);
 
-          var texts = svg.selectAll(".node").append("text")
+          var nodeTexts = svg.selectAll(".node").append("text")
             .attr("class", "label")
             .style("font-size", 20)
             .style("stroke-width", "1px")
@@ -76,6 +95,15 @@ angular.module('foositDirectives', ['d3'])
             .style("fill", "black")
             .style("fill-opacity", 1)
             .text(function(d) { return d.name });
+
+          var linkTexts = svg.selectAll(".link").append("text")
+            .attr("class", "label")
+            .style("font-size", 16)
+            .style("stroke-width", "1px")
+            .style("stroke", "black")
+            .style("fill", "black")
+            .style("fill-opacity", 1)
+            .text(function(d) { return d.value });          
 
           force.on("tick", function() {
             link.attr("x1", function(d) { return d.source.x })
@@ -86,8 +114,12 @@ angular.module('foositDirectives', ['d3'])
             node.attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; });
 
-            texts.attr("transform", function(d) {
+            nodeTexts.attr("transform", function(d) {
               return "translate(" + (d.x - 35) + "," + (d.y - 25) + ")";
+            });
+
+            linkTexts.attr("transform", function(d) {
+              return "translate(" + (d.target.x - ((d.target.x-d.source.x)/2)) + "," + (d.target.y - ((d.target.y-d.source.y)/2)) + ")";
             });
 
           });
