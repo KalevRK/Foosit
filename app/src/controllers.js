@@ -30,6 +30,9 @@ angular.module('foositControllers', [])
   .controller('MatchCtrl', ['$scope', 'MatchService', function MatchCtrl($scope, MatchService) {
     
     $scope.matchList = [];
+
+    // Default ordering of the records is by date
+    // This can be changed by the user
     $scope.order = 'date';
 
     // Get the latest match data from the server
@@ -41,6 +44,7 @@ angular.module('foositControllers', [])
         .catch(function(err) {
           console.error('Error in getting matches:', err);
         });
+    }
 
     $scope.addNewMatch = function() {
 
@@ -73,8 +77,6 @@ angular.module('foositControllers', [])
     $scope.setOrder = function(order) {
       $scope.order = order;
     };
-
-    }
 
     // Populate $scope with latest match list on controller load
     refreshMatchList();

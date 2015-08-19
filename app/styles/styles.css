@@ -1,8 +1,30 @@
+body {
+  margin: 0 2em;
+  font-family: 'Lato', sans-serif;
+  background-image: url("../resources/subtlenet2.png");
+}
+
+h1 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h5 {
+  font-style: italic;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: #F5F9ED;
+}
+
 th {
   background-color: #B3F29D;
   border-bottom: solid 2px #7E827D;
   border-right: solid 1px #D3D3D3;
   border-left: solid 1px #D3D3D3;
+  font-size: 12pt;
+  font-style: bold;
 }
 
 #matchTableHeader th:hover {
@@ -13,6 +35,10 @@ th {
 td {
   border-right: solid 1px #D3D3D3;
   border-left: solid 1px #D3D3D3;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover {
+  background-color: #F5F5DC;
 }
 
 .node {
