@@ -30,6 +30,59 @@ angular.module('foositDirectives', ['d3'])
             return;
           }
 
+          // Mouseover function for SVG circles
+          function mouseOverFunction() {
+            // Highlight circle
+            var circle = d3.select(this);
+            circle
+              .style("fill", "#B3F29D")
+              .style("fill-opacity", 0.5);
+
+            // Find links which have circle as source and highlight
+            svg.selectAll(".link")
+              .filter(function(d) {
+                return d.source.name === circle[0][0].__data__.name;
+              })
+              .style("stroke", "#B3F29D");
+
+            // Find labels which have circle as source and highlight
+            svg.selectAll(".label")
+              .filter(function(d) {
+                if (d.name) {
+                  return d.name === circle[0][0].__data__.name;
+                } else {
+                  return d.source.name === circle[0][0].__data__.name;
+                }
+              })
+              .style("fill","#B3F29D");
+          }
+
+          function mouseOutFunction() {
+            // Restore original styling of circle
+            var circle = d3.select(this);
+            circle
+              .style("fill", "black")
+              .style("fill-opacity", 0.1);
+
+            // Find links which have circle as source and restore original styling
+            svg.selectAll(".link")
+              .filter(function(d) {
+                return d.source.name === circle[0][0].__data__.name;
+              })
+              .style("stroke", "#999");
+              
+            // Find labels which have circle as source and restore original styling
+            svg.selectAll(".label")
+              .filter(function(d) {
+                if (d.name) {
+                  return d.name === circle[0][0].__data__.name;
+                } else {
+                  return d.source.name === circle[0][0].__data__.name;
+                }
+              })
+              .style("fill","black");
+          }
+
           // Remove any previously rendered SVG elements
           d3.select("svg").remove();
 
@@ -90,6 +143,8 @@ angular.module('foositDirectives', ['d3'])
             .attr("class", "node")
             .append("circle")
             .style("r", 20)
+            .on("mouseover", mouseOverFunction)
+            .on("mouseout", mouseOutFunction)
             .call(force.drag);
 
           // Label nodes with player names
