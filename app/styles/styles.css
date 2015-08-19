@@ -18,9 +18,10 @@ td {
 .node {
   stroke: #fff;
   stroke-width: 1.5px;
+  fill-opacity: 0.1;
 }
 
 .link {
   stroke: #999;
-  stroke-opacity: 0.6;
+  stroke-opacity: .6;
 }
