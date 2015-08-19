@@ -1,3 +1,8 @@
+// Define the Controllers for the App
+// ----------------------------------
+//
+// All of the controller used in the app are defined here.
+
 'use strict';
 
 angular.module('foositControllers', [])

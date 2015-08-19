@@ -1,3 +1,8 @@
+// Top-Level Module for Angular App
+// --------------------------------
+//
+// Injects dependencies for the Angular app and sets up routing using ng-route.
+
 'use strict';
 
 angular.module('foositApp', ['ngRoute', 'foositControllers', 'foositServices', 'foositDirectives', 'd3'])

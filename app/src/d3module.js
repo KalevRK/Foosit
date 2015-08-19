@@ -1,5 +1,8 @@
+// D3.js Library Factory
+// ---------------------
+//
 // Package the D3.js minified code inside of a factory inside of its own module
-// for use in the foosit-graph custom directive
+// for use in the foosit-graph custom directive.
 
 angular.module('d3', [])
   .factory('d3Service', [function() {

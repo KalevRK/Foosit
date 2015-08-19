@@ -1,3 +1,8 @@
+// Define the Services for the App
+// -------------------------------
+//
+// All of the services used in the app are defined here.
+
 'use strict';
 
 angular.module('foositServices', [])

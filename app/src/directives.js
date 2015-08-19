@@ -1,3 +1,9 @@
+// Custom Directive for D3 Graph
+// -----------------------------
+//
+// Define a custom directive for the D3 code in order to integrate it with the rest
+// of the Angular app.
+
 'use strict';
 
 angular.module('foositDirectives', ['d3'])
